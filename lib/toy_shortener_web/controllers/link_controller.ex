@@ -8,6 +8,10 @@ defmodule ToyShortenerWeb.LinkController do
   def shorten(conn, %{"new" => params}) do
     ToyShortener.shorten(params["link"])
     |> case do
+      {:exists, link} ->
+        conn
+        |> put_flash(:info, "Short link already exists")
+        |> redirect(to: link_path(conn, :display, link.alias))
       {:ok, link} ->
         conn
         |> put_flash(:info, "Short link created")

@@ -8,6 +8,14 @@ defmodule ToyShortener do
 
   #Get link, return shortened link
   def shorten(link) do
+    find(url: link)
+    |> case do
+      nil -> create_link(link)
+      data -> {:exists, data}
+    end
+  end
+
+  def create_link(link) do
     link_alias = get_alias(link)
 
     Link.changeset(%Link{}, %{"url" => link, "alias" => link_alias})
