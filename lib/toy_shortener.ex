@@ -1,5 +1,5 @@
 defmodule ToyShortener do
-  alias ToyShortener.Schemas.Link
+  alias ToyShortener.Schemas.{Link, Visit}
   alias ToyShortener.Repo
 
   def find(opts) do
@@ -30,5 +30,12 @@ defmodule ToyShortener do
     #TODO: Replace hashing function
     :crypto.hash(:md5, link)
     |> Base.encode64(padding: false)
+  end
+
+  def record_visit(link, info) do
+    IO.inspect(info)
+    Ecto.build_assoc(link, :visits)
+    |> Visit.changeset(info)
+    |> Repo.insert!()
   end
 end

@@ -41,7 +41,20 @@ defmodule ToyShortenerWeb.LinkController do
         |> put_flash(:error, "The link you're trying to reach doesn't exist.")
         |> redirect(to: link_path(conn, :index))
       link ->
+        ToyShortener.record_visit(link, extract_visitor_info(conn))
         redirect(conn, external: link.url)
     end
+  end
+
+  defp extract_visitor_info(conn) do
+    ip =
+      conn.remote_ip
+      |> Tuple.to_list()
+      |> Enum.join(".")
+    %{
+      "ip_address" => ip,
+      "user_agent" => get_req_header(conn, "user-agent") |> List.first(),
+      "referal" => get_req_header(conn, "referer") |> List.first(),
+    }
   end
 end
