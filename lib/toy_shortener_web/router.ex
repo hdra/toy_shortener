@@ -22,8 +22,9 @@ defmodule ToyShortenerWeb.Router do
     get "/:alias", LinkController, :resolve
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", ToyShortenerWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", ToyShortenerWeb do
+    pipe_through :api
+
+    get "/:alias", StatsController, :summary
+  end
 end
