@@ -15,5 +15,15 @@ defmodule ToyShortener.Schemas.Link do
     |> cast(params, [:url, :alias])
     |> validate_required([:url, :alias])
     |> unique_constraint(:alias)
+    |> validate_url(:url, message: "Invalid URL")
+  end
+
+  def validate_url(changeset, field, options \\ []) do
+    validate_change(changeset, field, fn(_, url) ->
+      case url |> String.to_char_list() |> :http_uri.parse do
+        {:ok, _} -> []
+        {:error, msg} -> [{field, options[:message] || "invalid url: #{inspect(msg)}"}]
+      end
+    end)
   end
 end

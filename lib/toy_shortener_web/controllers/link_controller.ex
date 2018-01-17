@@ -16,8 +16,14 @@ defmodule ToyShortenerWeb.LinkController do
         conn
         |> put_flash(:info, "Short link created")
         |> redirect(to: link_path(conn, :display, link.alias))
-      {:error, _error} ->
-        render(conn, "index.html")
+      {:error, changeset} ->
+        error =
+          changeset.errors
+          |> Enum.map(fn({_key, {errors, _}}) -> errors end)
+          |> Enum.join("\n")
+        conn
+        |> put_flash(:error, error)
+        |> redirect(to: link_path(conn, :index))
     end
   end
 

@@ -25,7 +25,7 @@ defmodule ToyShortener do
       |> Repo.insert()
       |> case do
         {:ok, data} -> {:ok, data}
-        {:error, error} -> {:error, error}
+        {:error, changeset} -> {:error, changeset}
       end
     rescue
       SqliteError -> create_link(link, tries + 1)
