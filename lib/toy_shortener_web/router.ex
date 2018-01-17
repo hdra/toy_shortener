@@ -19,6 +19,7 @@ defmodule ToyShortenerWeb.Router do
     get "/", LinkController, :index
     post "/", LinkController, :shorten
     get "/:alias/view", LinkController, :display
+    get "/:alias", LinkController, :resolve
   end
 
   # Other scopes may use custom stacks.

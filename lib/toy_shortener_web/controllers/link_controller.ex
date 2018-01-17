@@ -28,4 +28,16 @@ defmodule ToyShortenerWeb.LinkController do
         render(conn, "display.html", link: link)
     end
   end
+
+  def resolve(conn,  %{"alias" => alias}) do
+    ToyShortener.find(alias: alias)
+    |> case do
+      nil ->
+        conn
+        |> put_flash(:error, "The link you're trying to reach doesn't exist.")
+        |> redirect(to: link_path(conn, :index))
+      link ->
+        redirect(conn, external: link.url)
+    end
+  end
 end
