@@ -1,0 +1,9 @@
+<div class="jumbotron">
+  <p>Short link to <a href="<%= @link.url %>"><%= @link.url %></a><p>
+  <div class="input-group input-group-lg">
+    <input class="form-control disabled" disabled value="<%= @link.alias %>"/>
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="button">Go!</button>
+    </span>
+  </div><!-- /input-group -->
+</div>

@@ -1,8 +1,0 @@
-<div class="jumbotron">
-  <div class="input-group input-group-lg">
-    <input type="text" class="form-control" placeholder="http://.....">
-    <span class="input-group-btn">
-      <button class="btn btn-primary" type="button">Shorten</button>
-    </span>
-  </div><!-- /input-group -->
-</div>

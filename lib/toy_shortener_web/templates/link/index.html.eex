@@ -1,0 +1,10 @@
+<div class="jumbotron">
+  <%= form_for @conn, link_path(@conn, :shorten), [as: :new], fn f -> %>
+    <div class="input-group input-group-lg">
+      <%= text_input f, :link, placeholder: "http://...", class: "form-control", required: true %>
+      <span class="input-group-btn">
+        <%= submit "Shorten", class: "btn btn-primary" %>
+      </span>
+    </div><!-- /input-group -->
+  <% end %>
+</div>

@@ -1,9 +1,26 @@
 defmodule ToyShortener do
-  @moduledoc """
-  ToyShortener keeps the contexts that define your domain
-  and business logic.
+  alias ToyShortener.Schemas.Link
+  alias ToyShortener.Repo
 
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
-  """
+  def find(opts) do
+    Repo.get_by(Link, opts)
+  end
+
+  #Get link, return shortened link
+  def shorten(link) do
+    link_alias = get_alias(link)
+
+    Link.changeset(%Link{}, %{"url" => link, "alias" => link_alias})
+    |> Repo.insert()
+    |> case do
+      {:ok, data} -> {:ok, data}
+      {:error, error} -> {:error, error}
+    end
+  end
+
+  def get_alias(link) do
+    #TODO: Replace hashing function
+    :crypto.hash(:md5, link)
+    |> Base.encode64(padding: false)
+  end
 end

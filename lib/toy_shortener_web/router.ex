@@ -16,7 +16,9 @@ defmodule ToyShortenerWeb.Router do
   scope "/", ToyShortenerWeb do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/", LinkController, :index
+    post "/", LinkController, :shorten
+    get "/:alias/view", LinkController, :display
   end
 
   # Other scopes may use custom stacks.
