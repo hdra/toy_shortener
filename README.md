@@ -7,14 +7,20 @@ To start your Phoenix server:
   * Install Node.js dependencies with `cd assets && npm install`
   * Start Phoenix endpoint with `mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Build a small link shortener service with an API as well as a small web front-end.
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+The link shortener should be able to receive a URL and give back a shortened URL.
 
-## Learn more
+When a user accesses the shortened URL he should be redirected to the full URL.
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+It should have an API endpoint where you can query stats around a particular shortened URL giving you details about the users that have visited the URL with as much information as you can get on that person.
+
+The code must end up in a public GitHub or Bitbucket repository.
+
+The server must run with a single start-server command on a Linux, Windows or macOS machine and then be accessible through "localhost:4555".
+
+Commit often and make your commit messages descriptive so we can see your process.
+
+Documentation, user authentication and tests are optional but welcome.
+
+You do not need to use a full database, if you use one you must host it somewhere yourself on AWS, Azure, ... they have free tiers that will be more than enough for this exercise. For PostgresSQL https://www.elephantsql.com/plans.html is a great free option.
