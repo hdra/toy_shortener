@@ -26,5 +26,6 @@ defmodule ToyShortenerWeb.Router do
     pipe_through :api
 
     get "/:alias", StatsController, :summary
+    get "/:alias/visits", StatsController, :visits
   end
 end
