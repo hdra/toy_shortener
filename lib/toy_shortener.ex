@@ -1,6 +1,7 @@
 defmodule ToyShortener do
   alias ToyShortener.Schemas.{Link, Visit}
   alias ToyShortener.Repo
+  alias Sqlite.DbConnection.Error, as: SqliteError
 
   def find(opts) do
     Repo.get_by(Link, opts)
@@ -15,15 +16,25 @@ defmodule ToyShortener do
     end
   end
 
-  def create_link(link) do
-    link_alias = get_alias(link)
+  def create_link(link, tries \\ 0)
+  def create_link(link, tries) when tries < 10 do
+    try do
+      link_alias = get_alias(link)
 
-    Link.changeset(%Link{}, %{"url" => link, "alias" => link_alias})
-    |> Repo.insert()
-    |> case do
-      {:ok, data} -> {:ok, data}
-      {:error, error} -> {:error, error}
+      Link.changeset(%Link{}, %{"url" => link, "alias" => link_alias})
+      |> Repo.insert()
+      |> case do
+        {:ok, data} -> {:ok, data}
+        {:error, error} -> {:error, error}
+      end
+    rescue
+      SqliteError -> create_link(link, tries + 1)
+      e -> {:error, e.message}
     end
+  end
+
+  def create_link(_link, 10) do
+    {:error, "Unable to generate shortlink"}
   end
 
   def get_alias(link) do
@@ -33,7 +44,6 @@ defmodule ToyShortener do
   end
 
   def record_visit(link, info) do
-    IO.inspect(info)
     Ecto.build_assoc(link, :visits)
     |> Visit.changeset(info)
     |> Repo.insert!()
