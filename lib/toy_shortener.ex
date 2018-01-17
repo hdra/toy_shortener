@@ -44,6 +44,9 @@ defmodule ToyShortener do
   end
 
   def record_visit(link, info) do
+    ToyShortener.Logger.record_visit(link, info)
+  end
+  def record_visit(link, info, :sync) do
     Ecto.build_assoc(link, :visits)
     |> Visit.changeset(info)
     |> Repo.insert!()

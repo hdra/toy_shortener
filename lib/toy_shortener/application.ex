@@ -13,7 +13,7 @@ defmodule ToyShortener.Application do
       # Start the endpoint when the application starts
       supervisor(ToyShortenerWeb.Endpoint, []),
       # Start your own worker by calling: ToyShortener.Worker.start_link(arg1, arg2, arg3)
-      # worker(ToyShortener.Worker, [arg1, arg2, arg3]),
+      worker(ToyShortener.Logger, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
