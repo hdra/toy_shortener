@@ -19,7 +19,7 @@ defmodule ToyShortener do
   def create_link(link, tries \\ 0)
   def create_link(link, tries) when tries < 10 do
     try do
-      link_alias = get_alias(link)
+      link_alias = get_alias(link, tries)
 
       Link.changeset(%Link{}, %{"url" => link, "alias" => link_alias})
       |> Repo.insert()
@@ -37,10 +37,8 @@ defmodule ToyShortener do
     {:error, "Unable to generate shortlink"}
   end
 
-  def get_alias(link) do
-    #TODO: Replace hashing function
-    :crypto.hash(:md5, link)
-    |> Base.encode64(padding: false)
+  def get_alias(link, tries) do
+    ToyShortener.Shortener.shorten(link, tries)
   end
 
   def record_visit(link, info) do

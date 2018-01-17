@@ -16,7 +16,7 @@ defmodule ToyShortenerWeb.LinkController do
         conn
         |> put_flash(:info, "Short link created")
         |> redirect(to: link_path(conn, :display, link.alias))
-      {:error, error} ->
+      {:error, _error} ->
         render(conn, "index.html")
     end
   end
