@@ -1,9 +1,23 @@
 <div class="jumbotron">
   <p>Short link to <a href="<%= @link.url %>"><%= @link.url %></a><p>
   <div class="input-group input-group-lg">
-    <input class="form-control disabled" disabled value="<%= @link.alias %>"/>
+    <input id="short_link" class="form-control" readonly value="<%= link_url(@conn, :resolve, @link.alias) %>"/>
     <span class="input-group-btn">
-      <button class="btn btn-default" type="button">Go!</button>
+      <button class="btn btn-default" type="button" id="copy_btn">COPY</button>
     </span>
   </div><!-- /input-group -->
 </div>
+
+
+<script>
+  var  copyBtn = document.querySelector('#copy_btn');
+  copyBtn.addEventListener('click', function(event) {
+    var target = document.querySelector('#short_link');
+    target.select();
+    try {
+      document.execCommand('copy');
+    } catch (err) {
+      alert('Unable to copy. Please select and copy it manually. ');
+    }
+  });
+</script>
