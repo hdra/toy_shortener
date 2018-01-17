@@ -19,13 +19,17 @@ defmodule ToyShortener do
   def create_link(link, tries \\ 0)
   def create_link(link, tries) when tries < 10 do
     try do
-      link_alias = get_alias(link, tries)
-
-      Link.changeset(%Link{}, %{"url" => link, "alias" => link_alias})
-      |> Repo.insert()
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert(:insert, Link.changeset(%Link{}, %{"url" => link}))
+      |> Ecto.Multi.run(:alias, fn(%{insert: link_record}) ->
+        link_alias = get_alias(link_record, tries)
+        Link.changeset(link_record, %{"alias" => link_alias})
+        |> Repo.update()
+      end)
+      |> Repo.transaction()
       |> case do
-        {:ok, data} -> {:ok, data}
-        {:error, changeset} -> {:error, changeset}
+        {:ok, %{alias: data}} -> {:ok, data}
+        {:error, _, changeset, _} -> {:error, changeset}
       end
     rescue
       SqliteError -> create_link(link, tries + 1)
@@ -38,7 +42,7 @@ defmodule ToyShortener do
   end
 
   def get_alias(link, tries) do
-    ToyShortener.Shortener.shorten(link, tries)
+    ToyShortener.Shortener.shorten(link, tries, :encode)
   end
 
   def record_visit(link, info) do

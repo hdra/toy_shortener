@@ -13,7 +13,7 @@ defmodule ToyShortener.Schemas.Link do
   def changeset(data, params) do
     data
     |> cast(params, [:url, :alias])
-    |> validate_required([:url, :alias])
+    |> validate_required([:url])
     |> unique_constraint(:alias)
     |> validate_url(:url, message: "Invalid URL")
   end

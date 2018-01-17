@@ -4,7 +4,6 @@ defmodule ToyShortener.Strategies.Encode do
   @charsets "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
   @base String.length(@charsets)
 
-  #Will need the link to be inserted first.
   def shorten(link, _tries) do
     encode(link.id)
   end
